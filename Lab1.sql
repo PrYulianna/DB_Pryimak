@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-09-17 00:45:30
+-- Started on 2024-09-17 15:59:46
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -27,7 +27,7 @@ CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 4806 (class 0 OID 0)
+-- TOC entry 4810 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
 --
@@ -95,6 +95,58 @@ CREATE TABLE public."Subjects" (
 
 
 ALTER TABLE public."Subjects" OWNER TO postgres;
+
+--
+-- TOC entry 4802 (class 0 OID 16416)
+-- Dependencies: 217
+-- Data for Name: Grades; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Grades" ("ID", "Value", "StudentsID") FROM stdin;
+1	11	1
+3	9	3
+2	10	2
+\.
+
+
+--
+-- TOC entry 4801 (class 0 OID 16411)
+-- Dependencies: 216
+-- Data for Name: Students; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Students" ("ID", "Name", "Surname", "Patronymic") FROM stdin;
+1	Alexandra	Vysova	Oleksiivna
+2	Ivan	Dovzenko	Oleksandrovysh
+3	Stepan	Koval	Romanovych
+\.
+
+
+--
+-- TOC entry 4803 (class 0 OID 16426)
+-- Dependencies: 218
+-- Data for Name: Students-subjects; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Students-subjects" ("StudentsID", "SubjectsID", "ID_connected") FROM stdin;
+3	1	3
+2	2	2
+1	3	1
+\.
+
+
+--
+-- TOC entry 4804 (class 0 OID 16434)
+-- Dependencies: 219
+-- Data for Name: Subjects; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Subjects" ("ID", "GradesID", "Name") FROM stdin;
+1	1	Maths
+3	3	Physics
+2	2	Geography
+\.
+
 
 --
 -- TOC entry 4649 (class 2606 OID 16420)
@@ -168,7 +220,7 @@ ALTER TABLE ONLY public."Students-subjects"
     ADD CONSTRAINT "Subjects-Students_fk" FOREIGN KEY ("SubjectsID") REFERENCES public."Subjects"("ID") NOT VALID;
 
 
--- Completed on 2024-09-17 00:45:30
+-- Completed on 2024-09-17 15:59:46
 
 --
 -- PostgreSQL database dump complete

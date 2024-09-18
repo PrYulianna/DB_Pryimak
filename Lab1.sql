@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-09-17 15:59:46
+-- Started on 2024-09-18 22:05:31
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -27,7 +27,7 @@ CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 4810 (class 0 OID 0)
+-- TOC entry 4809 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
 --
@@ -47,7 +47,7 @@ SET default_table_access_method = heap;
 CREATE TABLE public."Grades" (
     "ID" bigint NOT NULL,
     "Value" bigint NOT NULL,
-    "StudentsID" bigint NOT NULL
+    "ConnectedID" bigint NOT NULL
 );
 
 
@@ -89,7 +89,6 @@ ALTER TABLE public."Students-subjects" OWNER TO postgres;
 
 CREATE TABLE public."Subjects" (
     "ID" bigint NOT NULL,
-    "GradesID" bigint NOT NULL,
     "Name" character varying(30) NOT NULL
 );
 
@@ -97,20 +96,20 @@ CREATE TABLE public."Subjects" (
 ALTER TABLE public."Subjects" OWNER TO postgres;
 
 --
--- TOC entry 4802 (class 0 OID 16416)
+-- TOC entry 4801 (class 0 OID 16416)
 -- Dependencies: 217
 -- Data for Name: Grades; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Grades" ("ID", "Value", "StudentsID") FROM stdin;
+COPY public."Grades" ("ID", "Value", "ConnectedID") FROM stdin;
 1	11	1
-3	9	3
 2	10	2
+3	9	3
 \.
 
 
 --
--- TOC entry 4801 (class 0 OID 16411)
+-- TOC entry 4800 (class 0 OID 16411)
 -- Dependencies: 216
 -- Data for Name: Students; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -123,7 +122,7 @@ COPY public."Students" ("ID", "Name", "Surname", "Patronymic") FROM stdin;
 
 
 --
--- TOC entry 4803 (class 0 OID 16426)
+-- TOC entry 4802 (class 0 OID 16426)
 -- Dependencies: 218
 -- Data for Name: Students-subjects; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -136,15 +135,15 @@ COPY public."Students-subjects" ("StudentsID", "SubjectsID", "ID_connected") FRO
 
 
 --
--- TOC entry 4804 (class 0 OID 16434)
+-- TOC entry 4803 (class 0 OID 16434)
 -- Dependencies: 219
 -- Data for Name: Subjects; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Subjects" ("ID", "GradesID", "Name") FROM stdin;
-1	1	Maths
-3	3	Physics
-2	2	Geography
+COPY public."Subjects" ("ID", "Name") FROM stdin;
+1	Maths
+3	Physics
+2	Geography
 \.
 
 
@@ -185,12 +184,12 @@ ALTER TABLE ONLY public."Subjects"
 
 
 --
--- TOC entry 4657 (class 2606 OID 16439)
--- Name: Subjects Grades-Subjects_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4654 (class 2606 OID 32780)
+-- Name: Grades ID_ss; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public."Subjects"
-    ADD CONSTRAINT "Grades-Subjects_fk" FOREIGN KEY ("GradesID") REFERENCES public."Grades"("ID");
+ALTER TABLE ONLY public."Grades"
+    ADD CONSTRAINT "ID_ss" FOREIGN KEY ("ConnectedID") REFERENCES public."Students-subjects"("ID_connected") NOT VALID;
 
 
 --
@@ -203,15 +202,6 @@ ALTER TABLE ONLY public."Students-subjects"
 
 
 --
--- TOC entry 4654 (class 2606 OID 16421)
--- Name: Grades Students-grades_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Grades"
-    ADD CONSTRAINT "Students-grades_fk" FOREIGN KEY ("StudentsID") REFERENCES public."Students"("ID");
-
-
---
 -- TOC entry 4656 (class 2606 OID 32768)
 -- Name: Students-subjects Subjects-Students_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
@@ -220,7 +210,7 @@ ALTER TABLE ONLY public."Students-subjects"
     ADD CONSTRAINT "Subjects-Students_fk" FOREIGN KEY ("SubjectsID") REFERENCES public."Subjects"("ID") NOT VALID;
 
 
--- Completed on 2024-09-17 15:59:46
+-- Completed on 2024-09-18 22:05:31
 
 --
 -- PostgreSQL database dump complete
